@@ -87,26 +87,14 @@ export default {
     delProductModal
   },
   methods: {
-    getProduct (page = 1) {
+    getProductList (page = 1) {
       this.isLoading = true
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products?page=${page}`
       this.$http.get(url).then((response) => {
         if (response.data.success) {
           this.products = response.data.products
-          this.isLoading = false
-        } else {
-          alert(response.data.message)
-        }
-      }).catch(error => {
-        console.log(error)
-      })
-    },
-    getProductList (page = 1) {
-      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products?page=${page}`
-      this.$http.get(url).then((response) => {
-        if (response.data.success) {
-          this.products = response.data.products
           this.pagination = response.data.pagination
+          this.isLoading = false
         } else {
           alert(response.data.success)
         }
@@ -141,7 +129,6 @@ export default {
     this.$http.defaults.headers.common.Authorization = this.token
   },
   created () {
-    this.getProduct()
     this.getProductList()
   }
 }
