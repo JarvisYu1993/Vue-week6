@@ -77,7 +77,6 @@ export default {
         imagesUrl: []
       },
       pagination: {},
-      image: {},
       isLoading: false
     }
   },
