@@ -1,3 +1,10 @@
 module.exports = {
-  publicPath: '/Vue-week6/dist/'
+  chainWebpack: config => {
+      config
+          .plugin('html')
+          .tap(args => {
+              args[0].title = "tob` shoes shop";
+              return args;
+          })
+  }
 }

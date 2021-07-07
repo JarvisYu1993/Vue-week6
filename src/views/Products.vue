@@ -10,19 +10,17 @@
           class="productImg"
           :style="{ backgroundImage: `url(${item.imageUrl})` }"
           @click="getProduct(item.id)"
-          :disabled="loadingStatus.loadingItem === item.id || !item.is_enabled"
         >
         </div>
         <div class="text-start px-3 pt-3">
           <h2 class="product_title">{{ item.title }}</h2>
-          <del class="originPrice">原價：NT${{ item.origin_price }}</del>
-          <p class="nowPrice text-danger fw-bold">特價：NT${{ item.price }}</p>
+          <del class="originPrice">原價：NT${{ $filters.currency(item.origin_price) }}</del>
+          <p class="nowPrice text-danger fw-bold">特價：NT${{ $filters.currency(item.price) }}</p>
         </div>
         <a
           href="#"
           id="addCardBtn"
           @click.prevent="addCart(item.id, (qty = 1))"
-          :disabled="loadingStatus.loadingItem === item.id || !item.is_enabled"
         >
           加入購物車
         </a>
@@ -33,8 +31,8 @@
 </template>
 
 <script>
-import modalDetail from '@/components/modalDetail.vue'
-import pagination from '@/components/pagination.vue'
+import modalDetail from '@/components/ModalDetail.vue'
+import pagination from '@/components/Pagination.vue'
 
 export default {
   name: 'Products',
@@ -43,9 +41,6 @@ export default {
       products: [],
       product: {},
       cart: {},
-      loadingStatus: {
-        loadingItem: ''
-      },
       isLoading: false,
       pagination: {}
     }
@@ -63,6 +58,7 @@ export default {
           if (response.data.success) {
             this.products = response.data.products
             this.isLoading = false
+            console.log(response.data)
           } else {
             alert(response.data.message)
             this.isLoading = false
@@ -75,10 +71,8 @@ export default {
     getProduct (id) {
       this.isLoading = true
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/product/${id}`
-      this.loadingStatus.loadingItem = id
       this.$http.get(url).then((response) => {
         if (response.data.success) {
-          this.loadingStatus.loadingItem = ''
           this.product = response.data.product
           this.isLoading = false
           this.$refs.modalDetail.openModal()
@@ -102,7 +96,6 @@ export default {
     addCart (id, qty = 1) {
       this.isLoading = true
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`
-      this.loadingStatus.loadingItem = id
       const cart = {
         product_id: id,
         qty
@@ -110,7 +103,6 @@ export default {
       this.$http.post(url, { data: cart }).then((response) => {
         if (response.data.success) {
           alert(response.data.message)
-          this.loadingStatus.loadingItem = ''
           this.$refs.modalDetail.hideModal()
           this.isLoading = false
         } else {

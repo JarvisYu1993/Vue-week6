@@ -1,13 +1,19 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav">
-  <div class="container-fluid">
+  <div class="container">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <router-link to="/admin/products" class="nav-link">Products</router-link>
+          <router-link to="/admin/products" class="nav-link">後台產品</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/admin/orders" class="nav-link">後台訂單</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/admin/coupon" class="nav-link">優惠券</router-link>
         </li>
       </ul>
       <a href="#" class="ms-auto text-danger" @click.prevent="signout">登出</a>

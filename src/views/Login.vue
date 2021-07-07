@@ -25,7 +25,7 @@
                   </g>
                 </g>
               </svg>
-          <h1 class="h3 mb-3 font-weight-normal">
+          <h1 class="h3 mb-3 font-weight-normal text-center">
             登入
           </h1>
           <div class="col-6">
@@ -64,7 +64,7 @@
             </Form>
           </div>
         </div>
-        <p class="mt-5 mb-3 text-muted">
+        <p class="mt-5 mb-3 text-muted text-center">
           &copy; 2021~∞ - 六角學院
         </p>
     </div>
@@ -72,6 +72,7 @@
 
 <script>
 export default {
+  inject: ['emitter', '$httpMessageState'],
   data () {
     return {
       user: {
@@ -87,9 +88,10 @@ export default {
         if (response.data.success) {
           const { token, expired } = response.data
           document.cookie = `YuToken=${token};expires=${new Date(expired)}`
+          this.$httpMessageState(response, '登入結果')
           this.$router.push('/admin/products')
         } else {
-          alert(response.data.message)
+          this.$httpMessageState(response, '登入結果')
         }
       }).catch(error => {
         console.log(error)

@@ -17,7 +17,7 @@
             <tbody class="shoppingCart-tableList">
                 <tr v-for="item in cart.carts" :key="item.id">
                   <td>
-                    <div class="cardItem-title" :disabled="loadingStatus.loadingItem === item.id || !item.is_enabled">
+                    <div class="cardItem-title">
                         <img :src="item.product.imageUrl" :alt="item.title">
                         <p>{{item.product.title}}</p>
                     </div>
@@ -143,9 +143,6 @@ export default {
   name: 'Cart',
   data () {
     return {
-      loadingStatus: {
-        loadingItem: ''
-      },
       isLoading: false,
       cart: {},
       form: {
@@ -174,14 +171,26 @@ export default {
         console.log(error)
       })
     },
+    updateCart (item) {
+      this.isLoading = true
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${item.id}`
+      const cart = {
+        product_id: item.product_id,
+        qty: item.qty
+      }
+      this.$http.put(url, { data: cart }).then((response) => {
+        this.isLoading = false
+        this.getCart()
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     delCartItem (id) {
       this.isLoading = true
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${id}`
-      this.loadingStatus.loadingItem = id
       this.$http.delete(url).then((response) => {
         if (response.data.success) {
           alert(response.data.message)
-          this.loadingStatus.loadingItem = ''
           this.isLoading = false
           this.getCart()
         } else {
@@ -197,7 +206,6 @@ export default {
       this.$http.delete(url).then(response => {
         if (response.data.success) {
           alert(response.data.message)
-          this.loadingStatus.loadingItem = ''
           this.isLoading = false
           this.getCart()
         } else {

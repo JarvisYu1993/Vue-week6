@@ -31,6 +31,16 @@ const routes = [
         path: 'products',
         name: '後台產品',
         component: () => import('@/views/Dashboard/Products.vue')
+      },
+      {
+        path: 'orders',
+        name: '後台訂單',
+        component: () => import('@/views/Dashboard/Orders.vue')
+      },
+      {
+        path: 'coupon',
+        name: '後台優惠券',
+        component: () => import('@/views/Dashboard/Coupon.vue')
       }
     ]
   }
@@ -38,7 +48,8 @@ const routes = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
+  linkActiveClass: 'active'
 })
 
 export default router
